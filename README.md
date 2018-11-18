@@ -3,7 +3,11 @@
 ## Place config.json file on root folder
 ```
 {  
-   "title":"동네학원",
+   "title":{
+        "ko":"동네학원",
+        "en":"Dongne"
+   },
+   "link" : "", *Optional
    "pages":[  
       {  
          "url":"https://hungrdeals.com",
