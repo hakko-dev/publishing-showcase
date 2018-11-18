@@ -4,3 +4,4 @@ node_modules/
 src
 dist
 .DS_Store
+*.tar.gz
