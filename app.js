@@ -79,12 +79,15 @@ class App extends Component {
         }
     }
     render() {
-        const { width, height, src, scale, left } = this.state
+        const { width, height, src, scale, left, lang } = this.state
             return (
                 <React.Fragment>
                     <button className="p-0 btn" id="lang" onClick={this.onLanguageChange()}><i class="fas fa-language"></i></button>
                     <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content" role="main">
-                        <h1 class="bd-title" id="content">{window.title} <span style={{ fontSize: '1.5rem', color: '#e2873b' }}>{this.langConverter('showcase')}</span></h1>
+                        <h1 class="bd-title" id="content">{window.title[lang]} <span style={{ fontSize: '1.5rem', color: '#e2873b' }}>{this.langConverter('showcase')}</span></h1>
+                        {window.link && (
+                            <h6><a href={window.link} target="_blank">{this.langConverter('link')}</a></h6>
+                        )}
                         <p class="bd-lead d-none d-sm-block">{this.langConverter('info-top')}</p>
                         <p class="bd-lead d-block d-sm-none">{this.langConverter('info-mobile')}</p>
                     </main>
@@ -124,6 +127,12 @@ class App extends Component {
     langConverter(langId){
         const lang = this.state.lang
         switch(langId){
+            case 'link':
+                if(lang === 'en'){
+                    return 'Website Link'
+                }else{
+                    return '웹사이트 링크'
+                }
             case 'showcase': 
                 if(lang === 'en'){
                     return 'Showcase'
@@ -162,9 +171,10 @@ class Container extends React.Component{
     componentDidMount(){
         const targetLoadingTime = 1000
         const startTime = Date.now()
-        $.getJSON( "/config.json", ( data ) => {
+        $.getJSON( `${process.env.NODE_ENV==='development' ? 'http://test.hakko-dev.com': '' }/config.json`, ( data ) => {
             window.title = data.title
             window.pages = data.pages
+            window.link = data.link
             const endTime = Date.now()
             if(endTime - startTime < targetLoadingTime){
                 setTimeout(()=>{
